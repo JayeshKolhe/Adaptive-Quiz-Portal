@@ -1,0 +1,45 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+
+
+
+<p id="demo"></p>
+
+<p id="demo1"></p>
+
+<script>
+
+var a=setInterval(myCounter, 1000);
+var c = 0;
+function myCounter() {
+  document.getElementById("demo").innerHTML = ++c;
+}
+function my(){
+	alert(c);
+	clearInterval(a)
+	
+	
+	
+}
+</script> 
+${Question}
+
+
+<form method="post" action="home">
+<input type="radio" name="option" value="a">${option1 }<br>
+<input type="radio" name="option" value="b">${option2 }<br>
+<input type="radio" name="option" value="c">${option3 }<br>
+<input type="radio" name="option" value="d">${option4 }<br>
+<input type="submit" onClick="my()" value="save and next!">
+
+</form>
+</body>
+</html>

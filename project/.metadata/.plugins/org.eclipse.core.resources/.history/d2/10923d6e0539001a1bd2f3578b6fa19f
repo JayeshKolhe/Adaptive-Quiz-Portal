@@ -1,0 +1,123 @@
+package com.example.demo;
+
+import java.util.ArrayList;
+
+import javax.servlet.http.HttpSession;
+import javax.xml.ws.Response;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+@Controller
+public class controller {
+
+	public static int count=0;
+	public static int count1=0;
+
+	@Autowired
+	UserDao userdao;
+
+
+	@GetMapping("/signup")
+	public ModelAndView signup()
+	{
+		ModelAndView mv=new ModelAndView();
+		mv.setViewName("signup");
+		return mv;
+	}
+
+	@PostMapping("/signup")
+	public ModelAndView registeruser(User user)
+	{
+		this.userdao.createuser(user);
+		ModelAndView mv=new ModelAndView();
+		mv.setViewName("signin");
+		return mv;
+	}
+
+
+	@GetMapping("/signin")
+	public ModelAndView signin()
+	{
+		ModelAndView mv=new ModelAndView();
+		mv.setViewName("signin");
+		return mv;
+	}
+
+	@PostMapping("/signin")
+	public ModelAndView validateuser(User user)
+	{
+		ModelAndView mv=new ModelAndView();
+		try {
+			boolean val= this.userdao.validateuser(user);
+			if(val)
+			{
+				mv.setViewName("home");
+
+				return mv;
+			}
+			else
+			{
+				mv.setViewName("signin");
+
+				return mv;
+			}
+		}catch(Exception e)
+		{
+			mv.setViewName("signin");
+
+			return mv;
+		}
+	}
+
+
+	@GetMapping("/home")
+	public ModelAndView timepass()
+	{
+		ModelAndView mv=new ModelAndView();
+		mv.setViewName("home");
+		return mv;
+	}
+	@PostMapping("/home")
+	public ModelAndView startquiz()
+	{
+		if(count1<3) {
+			ModelAndView mv=new ModelAndView();
+
+			ArrayList<Questions> list=new ArrayList<>();
+
+			mv.setViewName("quiz");
+			list=this.userdao.getquestions();
+
+			Questions quest=list.get(count1);
+			count1++;
+			String question=quest.getQuestion();
+			String option1=quest.getOption1();
+			String option2=quest.getOption2();
+			String option3=quest.getOption3();
+			String option4=quest.getOption4();
+
+			mv.addObject("Question",question);
+			mv.addObject("option1", option1);
+			mv.addObject("option2", option2);
+			mv.addObject("option3", option3);
+			mv.addObject("option4", option4);
+
+
+			return mv;
+		}
+
+
+
+		else {
+			ModelAndView mv=new ModelAndView();
+			mv.setViewName("result");
+			return mv;
+		}
+	}
+}
+
+
